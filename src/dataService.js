@@ -102,7 +102,7 @@ export const data = [
   },
 
   {
-    title: `Array.prototype.entriesn()`,
+    title: `Array.prototype.entries()`,
     description: `The entries() method returns a new Array Iterator object that contains the key/value pairs for each index in the array.`,
     example: [
       `const arr = [5, 7, 9];`,
@@ -183,14 +183,163 @@ export const data = [
     title: `Array.prototype.forEach()`,
     description: `The forEach() method executes a provided function once for each array element.`,
     example: [
-      `const numbers = [5, [12], [3], -2];`,
-      `console.log(numbers.findIndex(n => Array.isArray(n))); //1`,
-      `console.log(numbers.findIndex(n => n%4 === 0)); //1`,
-      `console.log(numbers.findIndex(n => n == 3)); //2`,
-      `console.log(numbers.findIndex(n => n > 12)); //-1`,
-      `**return the index of the first element in array that executes condition (doesn't return array) or -1`,
+      `[1,2,3].forEach((el, ind, arr) => {`,
+      'console.log(`el: ${el} index: ${ind} array: ${arr}`);',
+      `}); //el: 1 index: 0 array: 1,2,3 el: 2 index: 1 array: 1,2,3 el: 3 index: 2 array: 1,2,3`,
+      `**always returns 'undefined'`,
+      `**arr.forEach(item, index, currArray)`,
+      `**go on to work with return`,
+      `[1,2,3,4,5].forEach(function(el) {`,
+      `if(el > 3) {return true;}`,
+      `console.log(el);`,
+      `return false; // return який міг би переривати цикл`,
+      `}); //1 2 3`,
+      `** const foo = () => {`,
+      `for(let i=0; i<a.length; i++){`,
+      `if(a[i] > 3){return true}`,
+      `console.log(a[i]);`,
+      `return false; // return який перериває цикл,`,
+      `};`,
+      `};`,
+      `foo(); //1 false`,
     ],
     mutable: false,
+  },
+
+  {
+    title: `Array.prototype.includes()`,
+    description: `The includes() method determines whether an array includes a certain element, returning true or false as appropriate. It uses the sameValueZero algorithm to determine whether the given element is found.`,
+    example: [
+      `console.log([1,2,3].includes(3)); //true`,
+      `** array.includes(searchEl, fromPosition)`,
+      `** returns boolean`,
+    ],
+    mutable: false,
+  },
+
+  {
+    title: `Array.prototype.indexOf()`,
+    description: `The indexOf() method returns the first index at which a given element can be found in the array, or -1 if it is not present.`,
+    example: [
+      `console.log([1,2,3].indexOf(3)); // 2`,
+      `console.log([1,2,3].indexOf(2, 1)); //1`,
+      `** arr.indexOf(searchElement[, fromIndex])`,
+    ],
+    mutable: false,
+  },
+
+  {
+    title: `Array.prototype.join()`,
+    description: `The join() method joins all elements of an array (or an array-like object) into a string and returns this string.`,
+    example: [
+      `console.log(['abc', 'def', 'ghi'].join('')); //abcdefghi`,
+      `console.log(['abc', 'def', 'ghi'].join(' ')); //abc def ghi`,
+      `console.log(['abc', 'def', 'ghi'].join('***')); //abc***def***ghi`,
+    ],
+    mutable: false,
+  },
+
+  {
+    title: `Array.prototype.keys()`,
+    description: `The keys() method returns a new Array Iterator object that contains the keys for each index in the array.`,
+    example: [
+      `console.log(Array.from([1,2,3].keys())); //[0, 1, 2]`,
+      `console.log([...[1,2,3].keys()]); //[0, 1, 2]`,
+      `** return Array Iterator`,
+    ],
+    mutable: false,
+  },
+
+  {
+    title: `Array.prototype.lastIndexOf()`,
+    description: `The lastIndexOf() method returns the last index at which a given element can be found in the array, or -1 if it is not present. The array is searched backwards, starting at fromIndex.`,
+    example: [
+      `console.log([1,2,3,2].lastIndexOf(2)); // 3`,
+      `console.log([1,2,3,2].lastIndexOf(2, 3)); // 3`,
+      `console.log([1,2,3,2].lastIndexOf(5)); // -1`,
+      `** arr.lastIndexOf(searchElement, fromIndex)`,
+    ],
+    mutable: false,
+  },
+
+  {
+    title: `Array.prototype.map()`,
+    description: `The map() method creates a new array with the results of calling a provided function on every element in the calling array.`,
+    example: [
+      `console.log([1,2,3].map(el => el*3)); [3, 6, 9]`,
+      `** return new array`,
+      `** array.map(el, index, arr)`,
+    ],
+    mutable: false,
+  },
+
+  {
+    title: `Array.prototype.pop()`,
+    description: `The pop() method removes the last element from an array and returns that element. This method changes the length of the array.`,
+    example: [
+      `const arr = [1,2,3];`,
+      `const n = arr.pop();`,
+      `console.log(n); //3`,
+      `console.log(arr); //[1, 2]`,
+      `** return element`,
+    ],
+    mutable: true,
+  },
+
+  {
+    title: `Array.prototype.push()`,
+    description: `The push() method adds one or more elements to the end of an array and returns the new length of the array.`,
+    example: [
+      `const arr = [1, 2, 3];`,
+      `console.log(arr.push([4,5])); // 4`,
+      `console.log(arr); // [1, 2, 3, Array(2)]`,
+      `const a = [1, 2, 3];`,
+      `console.log(Array.prototype.push.apply(a, [4, 5])); // 5`,
+      `console.log(a); // [1, 2, 3, 4, 5]`,
+      `console.log([...[1, 2, 3], ...[4, 5]]); // [1, 2, 3, 4, 5]`,
+      `** return the length of new element`,
+    ],
+    mutable: true,
+  },
+
+  {
+    title: `Array.prototype.reduce()`,
+    description: `The reduce() method applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value.`,
+    example: [
+      `arr.reduce(callback(accumulator, currentValue, indexOfCurrentValue, array), initialValue)`,
+      `arr.reduce(callback(prev, cur, indexOfCur, array))`,
+      `console.log([1, 2, 3]].reduce((prev, curr) => prev + curr)); // 6`,
+      `console.log([1, 2, 3].reduce((total, curr) => total + curr); // 6`,
+      `console.log([1, 2, 3].reduce((accum, curr) => accum + curr, 10)); // 16`,
+      `console.log([[1, 2], [3, 4]].reduce((prev, curr) => prev.concat(curr))); // [1, 2, 3, 4]`,
+      `console.log([[1, 2], [3, 4]].reduce((accum, curr) => [...accum, ...curr], [])); // [1, 2, 3, 4]`,
+      `/*console.log([1, 2, 3].reduce((prev, curr) => (prev > curr) ? prev : curr));*/ // 3`,
+      `console.log([1, 2, 3].reduce((max, curr) => (curr > max) ? curr : max)); // 3`,
+      `/*console.log([1, 2, 3].reduce((prev, curr) => (prev < curr) ? prev : curr));*/ // 1`,
+      `console.log([1, 2, 3].reduce((min, curr) => (curr < min) ? curr : min)); // 1`,
+      `** return the value of result of callback;`,
+    ],
+    mutable: true,
+  },
+
+  {
+    title: `Array.prototype.reduceRight()`,
+    description: `The reduceRight() method applies a function against an accumulator and each value of the array (from right-to-left) to reduce it to a single value.`,
+    example: [
+      `arr.reduce(callback(accumulator, currentValue, indexOfCurrentValue, array), initialValue)`,
+      `arr.reduce(callback(prev, cur, indexOfCur, array))`,
+      `console.log([1, 2, 3]].reduceRight((prev, curr) => prev + curr)); // 6`,
+      `console.log([1, 2, 3].reduceRight((total, curr) => total + curr); // 6`,
+      `console.log([1, 2, 3].reduceRight((accum, curr) => accum + curr, 10)); // 16`,
+      `console.log([[1, 2], [3, 4]].reduceRight((prev, curr) => prev.concat(curr))); // [3, 4, 1, 2]`,
+      `console.log([[1, 2], [3, 4]].reduceRight((accum, curr) => [...accum, ...curr], [])); // [3, 4, 1, 2]`,
+      `/*console.log([1, 2, 3].reduceRight((prev, curr) => (prev > curr) ? prev : curr));*/ // 3`,
+      `console.log([1, 2, 3].reduceRight((max, curr) => (curr > max) ? curr : max)); // 3`,
+      `/*console.log([1, 2, 3].reduceRight((prev, curr) => (prev < curr) ? prev : curr));*/ // 1`,
+      `console.log([1, 2, 3].reduceRight((min, curr) => (curr < min) ? curr : min)); // 1`,
+      `** return the value of result of callback;`,
+    ],
+    mutable: true,
   },
 
   {
