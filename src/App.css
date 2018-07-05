@@ -28,3 +28,11 @@ textarea:not(:empty) {
   list-style-type: none;
   padding: 10px 15px;
 }
+
+.mutator {
+  background-color: yellowgreen !important;
+}
+
+.iteration {
+  color: red !important;
+}

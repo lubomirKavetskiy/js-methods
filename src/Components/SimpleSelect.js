@@ -20,7 +20,13 @@ const SimpleSelect = ({ valueForSelect, handleChangeValue, data, classes }) => (
       </MenuItem>
       {data.length &&
         data.map(obj => (
-          <MenuItem key={obj._id} value={obj._id}>
+          <MenuItem
+            key={obj._id}
+            value={obj._id}
+            className={`${obj.mutator ? 'mutator' : ''} ${
+              obj.iteration ? 'iteration' : ''
+            }`}
+          >
             {obj.title}
           </MenuItem>
         ))}

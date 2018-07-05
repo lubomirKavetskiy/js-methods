@@ -71,9 +71,9 @@ export const data = [
       `const src_1 = [5, [6]];`,
       `const newArr = target.concat(src_1);`,
       `console.log(newArr); //[1, 2, 3, 5, [6]] `,
-      `// Dont change target`,
+      `// Doesn't change target`,
       `console.log(target); //[1, 2, 3] `,
-      `// But retention the reference `,
+      `// But retentions the reference `,
       `// not `,
       `src_1[0] = 100; `,
       `console.log(src_1); // [100, [6]]  `,
@@ -85,7 +85,7 @@ export const data = [
       `let str = 'string';`,
       `console.log(newArr.concat(str)); //[1, 2, 3, 5, [6, 4], 'string']`,
     ],
-    mutable: false,
+    mutator: false,
   },
 
   {
@@ -98,7 +98,7 @@ export const data = [
       `copyWithin(where to paste, from copy, to copy)`,
       `** keeps previous length of array`,
     ],
-    mutable: true,
+    mutator: true,
   },
 
   {
@@ -110,7 +110,8 @@ export const data = [
       `//console.log(Array.from(arr.entries())); // [[0, 5], [1, 7], [2, 9]]`,
       `for (let val of arr.entries()) {console.log(val)}; // [0, 5] [1, 7] [2, 9]`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -120,7 +121,8 @@ export const data = [
       `const arr = [5, 10, 15];`,
       `console.log(arr.every(e => e % 5 === 0)); //true`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -136,7 +138,7 @@ export const data = [
       `fill(what paste, from index, to index)`,
       `** keeps previous length of array`,
     ],
-    mutable: true,
+    mutator: true,
   },
 
   {
@@ -149,7 +151,8 @@ export const data = [
       `console.log(fruits.filter(fr => fr.toLowerCase().indexOf('r') > -1)); //["Pear","cherry"] `,
       `** always return array (with elements if executes condition, or empty if doesn't)`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -162,7 +165,8 @@ export const data = [
       `console.log(fruits.find(fr => fr.toLowerCase().indexOf('r') > -1)); //"Pear"`,
       `**return the first element in array that executes condition (doesn't return array) or undefined`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -176,7 +180,8 @@ export const data = [
       `console.log(numbers.findIndex(n => n > 12)); //-1`,
       `**return the index of the first element in array that executes condition (doesn't return array) or -1`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -203,7 +208,8 @@ export const data = [
       `};`,
       `foo(); //1 false`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -214,7 +220,7 @@ export const data = [
       `** array.includes(searchEl, fromPosition)`,
       `** returns boolean`,
     ],
-    mutable: false,
+    mutator: false,
   },
 
   {
@@ -225,7 +231,7 @@ export const data = [
       `console.log([1,2,3].indexOf(2, 1)); //1`,
       `** arr.indexOf(searchElement[, fromIndex])`,
     ],
-    mutable: false,
+    mutator: false,
   },
 
   {
@@ -236,7 +242,7 @@ export const data = [
       `console.log(['abc', 'def', 'ghi'].join(' ')); //abc def ghi`,
       `console.log(['abc', 'def', 'ghi'].join('***')); //abc***def***ghi`,
     ],
-    mutable: false,
+    mutator: false,
   },
 
   {
@@ -247,7 +253,8 @@ export const data = [
       `console.log([...[1,2,3].keys()]); //[0, 1, 2]`,
       `** return Array Iterator`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -259,7 +266,7 @@ export const data = [
       `console.log([1,2,3,2].lastIndexOf(5)); // -1`,
       `** arr.lastIndexOf(searchElement, fromIndex)`,
     ],
-    mutable: false,
+    mutator: false,
   },
 
   {
@@ -270,7 +277,8 @@ export const data = [
       `** return new array`,
       `** array.map(el, index, arr)`,
     ],
-    mutable: false,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -283,7 +291,7 @@ export const data = [
       `console.log(arr); //[1, 2]`,
       `** return element`,
     ],
-    mutable: true,
+    mutator: true,
   },
 
   {
@@ -299,7 +307,7 @@ export const data = [
       `console.log([...[1, 2, 3], ...[4, 5]]); // [1, 2, 3, 4, 5]`,
       `** return the length of new element`,
     ],
-    mutable: true,
+    mutator: true,
   },
 
   {
@@ -319,7 +327,8 @@ export const data = [
       `console.log([1, 2, 3].reduce((min, curr) => (curr < min) ? curr : min)); // 1`,
       `** return the value of result of callback;`,
     ],
-    mutable: true,
+    mutator: false,
+    iteration: true,
   },
 
   {
@@ -339,7 +348,146 @@ export const data = [
       `console.log([1, 2, 3].reduceRight((min, curr) => (curr < min) ? curr : min)); // 1`,
       `** return the value of result of callback;`,
     ],
-    mutable: true,
+    mutator: false,
+    iteration: true,
+  },
+
+  {
+    title: `Array.prototype.reverse()`,
+    description: `The reverse() method reverses an array in place. The first array element becomes the last, and the last array element becomes the first.`,
+    example: [
+      `const arr =[1, 2, 3]`,
+      `const n = arr.reverse();`,
+      `console.log(arr); // [3, 2, 1]`,
+      `console.log(n); // [3, 2, 1]`,
+      `arr[3] = 4;`,
+      `console.log(arr); // [3, 2, 1, 4]`,
+      `console.log(n); // [3, 2, 1, 4]`,
+      `** return changed array`,
+      `** retentions the reference `,
+    ],
+    mutator: true,
+  },
+
+  {
+    title: `Array.prototype.shift()`,
+    description: `The shift() method removes the first element from an array and returns that removed element. This method changes the length of the array.`,
+    example: [
+      `const arr =[1, [2]]`,
+      `const n = arr.shift();`,
+      `console.log(arr); // [[2]]`,
+      `console.log(n); // 1`,
+      `** return the first value`,
+    ],
+    mutator: true,
+  },
+
+  {
+    title: `Array.prototype.slice()`,
+    description: `The slice() method returns a shallow copy of a portion of an array into a new array object selected from begin to end (end not included). The original array will not be modified.`,
+    example: [
+      `const a = [0, 1, 2, 3, 4, 5];`,
+      `const n = a.slice(1, 5);`,
+      `console.log(n) // [1, 2, 3, 4]`,
+      `console.log(a.slice(-1)) // [5]`,
+    ],
+    mutator: false,
+  },
+
+  {
+    title: `Array.prototype.some()`,
+    description: `The some() method tests whether at least one element in the array passes the test implemented by the provided function.`,
+    example: [
+      `console.log([1, 2, 3].some(el => el > 2)); // true`,
+      `console.log([1, 2, 3].some(el => el === 4 )); // false`,
+      `** return true or false`,
+    ],
+    mutator: false,
+    iteration: true,
+  },
+
+  {
+    title: `Array.prototype.sort()`,
+    description: `The sort() method sorts the elements of an array in place and returns the array. The sort is not necessarily stable. The default sort order is according to string Unicode code points.`,
+    example: [
+      `sort value:`,
+      `const a = [1, 2, 21, -2, 100, 30, 4, 0];`,
+      `console.log(a.sort((a, b) => a -b)); //  [-2, 0, 1, 2, 4, 21, 30, 100]`,
+      `sort letter:`,
+      `const arrStr = ['def', 'abc', 'jhk'];`,
+      `console.log(arrStr.sort((a, b) => b.localeCompare(b))); // ["abc", "def", "jhk"]`,
+      `console.log(arrStr.sort((a, b) => b.localCompare(a))); // ['def', 'abc', 'jhk']`,
+      `** return the sorted arra`,
+    ],
+    mutator: true,
+  },
+
+  {
+    title: `Array.prototype.splice()`,
+    description: `The splice() method changes the contents of an array by removing existing elements and/or adding new elements.`,
+    example: [
+      `sort value:`,
+      `const arr = [0, 1, 2, 3, 4, 5];`,
+      `const n = arr.splice(0);`,
+      `console.log(arr);`,
+      `console.log(n); // []`,
+      `const arr_2 = [0, 1, 2, 3, 4, 5];`,
+      `const n_2 = arr_2.splice(2, 2);`,
+      `console.log(arr_2); // [0, 1, 4, 5]`,
+      `console.log(n_2); // [2, 3]`,
+      `const arr_3 = [0, 1, 2, 3, 4, 5];`,
+      `const n_3 = arr_3.splice(3, 0, 100);`,
+      `console.log(arr_3); // [0, 1, 2, 100, 3, 4, 5]`,
+      `console.log(n_3); // []`,
+      `const arr_4 = [0, 1, 2, 3, 4, 5];`,
+      `const n_4 = arr_4.splice(-3, 2);`,
+      `console.log(arr_4); // [0, 1, 2, 5]`,
+      `console.log(n_4); // [3, 4],`,
+      `** return an array containing the deleted elements or empty array`,
+    ],
+    mutator: true,
+  },
+
+  {
+    title: `Array.prototype.toString()`,
+    description: `The toString() method returns a string representing the specified array and its elements.`,
+    example: [
+      `const arr = [1, 2, 3];`,
+      `console.log(arr.toString()); // '1, 2, 3'`,
+      `** return string`,
+    ],
+    mutator: false,
+  },
+
+  {
+    title: `Array.prototype.values()`,
+    description: `The values() method returns a new Array Iterator object that contains the values for each index in the array.`,
+    example: [
+      `const arr = [1, 2, 3];`,
+      `const iterator = arr.values()`,
+      `for(const value of iterators) {console.log(value);} // 1 2 3`,
+      `const arr = [1, 2, 3];`,
+      `for(const value of arr.keys()) {console.log(value)}; // 0 1 2`,
+      `** return Array Iterator`,
+    ],
+    mutator: false,
+    iteration: true,
+  },
+
+  {
+    title: `Array.prototype.unShift()`,
+    description: `The unshift() method adds one or more elements to the beginning of an array and returns the new length of the array.`,
+    example: [
+      `const arr = [1, 2, 3];`,
+      `console.log(arr.unshift(0)); // 4`,
+      `console.log(arr) // [0, 1, 2, 3]`,
+      `console.log(arr.unshift(-2, -1)); // 6`,
+      `console.log(arr); // [-2, -1, 0, 1, 2, 3]`,
+      `console.log(arr.unshift(['start']); // 7`,
+      `console.log(arr); // [['start'], -2, -1, 0, 1, 2, 3]`,
+      `** return new arrays legth`,
+    ],
+    mutator: true,
   },
 
   {
@@ -350,13 +498,26 @@ export const data = [
       `src_1 = {b: 3},`,
       `src_2 = {b: 4, c: 5};`,
       `console.log(Object.assign(target, src_1, src_2)); // {a: 1, b: 4, c: 5}`,
-      `// NEVER retention the reference`,
-      `src_2.b = 100;`,
-      `console.log(target.b); // 4`,
-      `console.log(Object.assign({...target, c: 6})); //{a: 1, b: 4, c: 6}`,
-      `console.log(Object.assign({}, src_1, src_2)); // {b: 100, c: 5}`,
+      `// doesn't retention the reference`,
+      `const a = {b: 1};`,
+      `const c = Object.assign({}, a)`,
+      `console.log(c); // {b: 1}`,
+      `a.b = 100`,
+      `console.log(c); // {b: 1}`,
+      `// retentions the reference`,
+      `const a = {b: 1};`,
+      `const c = Object.assign(a, {v: 1});`,
+      `console.log(c); // {b: 1, v: 1}`,
+      `a.b = 100;`,
+      `console.log(c); // {b: 100, v: 1}`,
+      `-- or --`,
+      `const a = {b: {d:11}}};`,
+      `const c = Object.assign({}, a);`,
+      `console.log(c); // {b: {d: 1}}}`,
+      `a.b.d = 100;`,
+      `console.log(c); // // {b: {d: 100}}}`,
     ],
-    mutable: true,
+    mutator: true,
     star: 3,
   },
 ].map(obj => Object.assign(obj, { _id: returnId() }));
