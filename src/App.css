@@ -1,10 +1,30 @@
-.container {
+body {
   background-color: #EEE;
   padding: 16px;
 }
 
+.list-of-selects {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.list-of-selects > li {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 form > div:not(:first-child){
-  min-width: 400px;
+  display: flex !important;
+}
+
+.wrapper-for-textfield {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .MuiInput-focused-27 textarea,
@@ -14,6 +34,10 @@ textarea:not(:empty) {
   color: rgb(97, 218, 251) !important;
   line-height: 2 !important;
   padding: 0 10px !important;
+}
+
+.MuiFormControl-root-6 {
+  min-width: 320px !important;
 }
 
 .MuiSnackbarContent-root-101,
@@ -35,4 +59,16 @@ textarea:not(:empty) {
 
 .iteration {
   color: red !important;
+}
+
+@media(min-width: 540px) {
+  .list-of-selects > li {
+    width: 50%;
+  }
+}
+
+@media(min-width: 767px) {
+  .list-of-selects > li {
+    width: 25%;
+  }
 }

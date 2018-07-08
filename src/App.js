@@ -9,7 +9,7 @@ import AlertDialog from './Components/AlertDialog';
 import SimpleSelect from './Components/SimpleSelect';
 import SimpleTextfield from './Components/SimpleTextField';
 import './App.css';
-import { data } from './dataService';
+import { typeOfSelects } from './dataService';
 
 const styles = theme => ({
   root: {
@@ -37,7 +37,13 @@ function TransitionDown(props) {
 
 class App extends React.Component {
   state = {
-    valueForSelect: ``,
+    idOfCurrentSelect: ``,
+    valueForSelect: {
+      [`arrayMethods`]: ``,
+      [`objectMethods`]: ``,
+      [`mapAndSet`]: ``,
+      [`loops`]: ``,
+    },
     valueFromTextField: ``,
     openSnackbar: false,
     Transition: null,
@@ -66,16 +72,22 @@ class App extends React.Component {
     }
   }
 
-  handleChangeValue = name => ({ target: { value } }) => {
+  handleChangeValue = (name, selectId) => ({ target: { value } }) => {
     if (name === `valueForSelect`) {
       if (value === ``) {
         return this.setState({
-          [name]: value,
+          valueForSelect: {
+            [selectId]: value,
+          },
           openAlertDialog: false,
         });
       }
       return this.setState({
-        [name]: value,
+        idOfCurrentSelect: selectId,
+        valueForSelect: {
+          ...this.state.valueForSelect,
+          [selectId]: value,
+        },
         openAlertDialog: true,
       });
     }
@@ -94,12 +106,13 @@ class App extends React.Component {
     });
 
   returnExample = () =>
-    data
+    typeOfSelects[0].dataForSelect
       .filter(d => d._id === this.state.valueForSelect)[0]
       .example.map((ex, index) => <li key={index}>{ex}</li>);
 
   render() {
     const {
+      idOfCurrentSelect,
       valueForSelect,
       valueFromTextField,
       openSnackbar,
@@ -113,39 +126,59 @@ class App extends React.Component {
 
     return (
       <Fragment>
-        <form autoComplete="off" className="container">
-          <SimpleSelect
-            valueForSelect={valueForSelect}
-            handleChangeValue={this.handleChangeValue(`valueForSelect`)}
-            data={data}
-            classes={classes}
-          />
-          <AlertDialog
-            openAlertDialog={openAlertDialog}
-            handleToggleAlertDialog={this.handleToggleAlertDialog}
-            titleChoosenMethod={
-              valueForSelect &&
-              `About /*${
-                data.filter(d => d._id === valueForSelect)[0].title
-              }*/ method`
-            }
-          >
-            <span style={{ display: `block` }}>
-              {valueForSelect &&
-                `Description: ${
-                  data.filter(d => d._id === valueForSelect)[0].description
-                }`}
-            </span>
-            {/* <ul>{valueForSelect && this.returnExample}</ul> */}
-            <ul className="example-list">
-              Example:
-              {valueForSelect &&
-                data
-                  .filter(d => d._id === this.state.valueForSelect)[0]
-                  .example.map((ex, index) => <li key={index}>{ex}</li>)}
-            </ul>
-          </AlertDialog>
-          <br />
+        <ul className="list-of-selects">
+          {typeOfSelects.map(select => (
+            <li key={select._id}>
+              <SimpleSelect
+                selectTitle={select.title}
+                valueForSelect={valueForSelect[select._id]}
+                handleChangeValue={this.handleChangeValue(
+                  `valueForSelect`,
+                  select._id
+                )}
+                data={select.dataForSelect}
+                classes={classes}
+              />
+            </li>
+          ))}
+        </ul>
+        <AlertDialog
+          openAlertDialog={openAlertDialog}
+          handleToggleAlertDialog={this.handleToggleAlertDialog}
+          titleChoosenMethod={
+            valueForSelect[idOfCurrentSelect] &&
+            `About /*${
+              typeOfSelects
+                .find(el => el._id === idOfCurrentSelect)
+                .dataForSelect.filter(
+                  d => d._id === valueForSelect[idOfCurrentSelect]
+                )[0].title
+            }*/ method`
+          }
+        >
+          <span style={{ display: `block` }}>
+            {valueForSelect[idOfCurrentSelect] &&
+              `Description: ${
+                typeOfSelects
+                  .find(el => el._id === idOfCurrentSelect)
+                  .dataForSelect.filter(
+                    d => d._id === valueForSelect[idOfCurrentSelect]
+                  )[0].description
+              }`}
+          </span>
+          <ul className="example-list">
+            Example:
+            {valueForSelect[idOfCurrentSelect] &&
+              typeOfSelects
+                .find(el => el._id === idOfCurrentSelect)
+                .dataForSelect.filter(
+                  d => d._id === valueForSelect[idOfCurrentSelect]
+                )[0]
+                .example.map((ex, index) => <li key={index}>{ex}</li>)}
+          </ul>
+        </AlertDialog>
+        <br />
+        <div className="wrapper-for-textfield">
           <SimpleTextfield
             valueFromTextField={valueFromTextField}
             handleChangeValue={this.handleChangeValue(`valueFromTextField`)}
@@ -166,17 +199,17 @@ class App extends React.Component {
           >
             <DeleteIcon />
           </Button>
-          <Snackbar
-            open={openSnackbar}
-            TransitionComponent={Transition}
-            message={
-              <div>
-                <p id="message-id">{result && JSON.stringify(result)}</p>
-                <p>{true && message}</p>
-              </div>
-            }
-          />
-        </form>
+        </div>
+        <Snackbar
+          open={openSnackbar}
+          TransitionComponent={Transition}
+          message={
+            <div>
+              <p id="message-id">{result && JSON.stringify(result)}</p>
+              <p>{true && message}</p>
+            </div>
+          }
+        />
       </Fragment>
     );
   }
