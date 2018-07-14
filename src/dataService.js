@@ -416,12 +416,12 @@ export const typeOfSelects = [
         example: [
           `sort value:`,
           `const a = [1, 2, 21, -2, 100, 30, 4, 0];`,
-          `console.log(a.sort((a, b) => a -b)); //  [-2, 0, 1, 2, 4, 21, 30, 100]`,
+          `console.log(a.sort((a, b) => a - b)); //  [-2, 0, 1, 2, 4, 21, 30, 100]`,
           `sort letter:`,
           `const arrStr = ['def', 'abc', 'jhk'];`,
-          `console.log(arrStr.sort((a, b) => b.localeCompare(b))); // ["abc", "def", "jhk"]`,
-          `console.log(arrStr.sort((a, b) => b.localCompare(a))); // ['def', 'abc', 'jhk']`,
-          `** return the sorted arra`,
+          `console.log(arrStr.sort((a, b) => a.localeCompare(b))); // ["abc", "def", "jhk"]`,
+          `console.log(arrStr.sort((a, b) => b.localCompare(a))); // ['jhk', 'def', 'abc']`,
+          `** return the sorted array`,
         ],
         mutator: true,
       },
@@ -534,6 +534,8 @@ export const typeOfSelects = [
           `for(const val of Array.from([10, 20, 30].entries())) {`,
           `console.log(val);`,
           `} // [0, 10] [1, 20] [2, 30]`,
+          `для Iteratora (отриманих з .entries() || .keys() || .values() --- працює лише for...of та .next().value)`,
+          `щоб запрацював for...in, потрібно викор. Array.from(.entries(), .keys(), .values())`,
         ],
       },
 
@@ -643,7 +645,101 @@ export const typeOfSelects = [
           `const arr = Object.entries(obj);`,
           `console.log(arr); //=> [["a": 1], ["b": 1]]`,
         ],
-        mutator: true,
+        mutator: false,
+      },
+
+      {
+        title: `Object.freeze()`,
+        description: `Prevents adding, removing or changing any vlue.`,
+        example: [
+          `const obj = {a: 1, b: {c: 2}};`,
+          `const f = Object.freeze(obj);`,
+          `obj.a = 100;`,
+          `obj.b.c = 22;`,
+          `obj.n = 555;`,
+          `f.d = 100;`,
+          `delete f.a;`,
+          `console.log(f); //=> {a: 1, b: {c: 22}}`,
+          `return freezed object`,
+        ],
+        mutator: false,
+      },
+
+      {
+        title: `Object.getPrototypeOf()`,
+        description: `Returns prototype.`,
+        example: [
+          `const obj = {};`,
+          `const n = Object.create(obj);`,
+          `console.log(Object.getPrototypeOf(n) == bject); //=> true`,
+        ],
+        mutator: false,
+      },
+
+      {
+        title: `Object.is()`,
+        description: `The Object.is() method determines whether two values are the same value.`,
+        example: [
+          `console.log(Object.is(1, true)); //=> true`,
+          `console.log(Object.is(5, 5)); //=> true`,
+          `console.log(Object.is([], [])); //=> false`,
+        ],
+        mutator: false,
+      },
+
+      {
+        title: `Object.keys()`,
+        description: `The Object.keys() method returns an array of a given object's property names, in the same order as we get with a normal loop.`,
+        example: [
+          `const obj = {100: 'a', 1: {c: 2}};`,
+          `console.log(Object.keys(obj)); //=> ['1', '100']`,
+          `console.log(Object.keys('foo')); //=> ['0', '1', '2']`,
+          `console.log(Object.keys([1, 5])); //=> ['0', '1']`,
+          `console.log([1, 5]].keys()); //=> Array Iterator {}`,
+          `const obj = {a: 1, b: {c: 2}};`,
+          `const res = Object.keys(obj);`,
+          `obj.p = 100;`,
+          `delete obj.a;`,
+          `obj.b.k = 555;`,
+          `console.log(res); //=> ['a', 'b']`,
+        ],
+        mutator: false,
+      },
+
+      {
+        title: `Object.prototype.hasOwnProperty()`,
+        description: `The hasOwnProperty() method returns a boolean indicating whether the object has the specified property as its own property (as opposed to inheriting it).`,
+        example: [
+          `const obj = {100: 'a', 1: {c: 2}};`,
+          `console.log(obj.hasOwnProperty('a')); //=> true`,
+          `console.log(obj.hasOwnProperty('c')); //=> false`,
+        ],
+        mutator: false,
+      },
+
+      {
+        title: `Object.seal()`,
+        description: `The Object.seal() method seals an object, preventing new properties from being added to it and marking all existing properties as non-configurable. Values of present properties can still be changed as long as they are writable..`,
+        example: [
+          `const obj = {a: 1};`,
+          `Object.seal(obj);`,
+          `obj.a = 100;`,
+          `console.log(obj.a); //=> 100`,
+          `obj.n = 50;`,
+          `console.log(obj.n); //=> undefined`,
+        ],
+        mutator: false,
+      },
+
+      {
+        title: `Object.values()`,
+        description: `The Object.values() method returns an array of a given object's own enumerable property values, in the same order as that provided by a for...in loop (the difference being that a for-in loop enumerates properties in the prototype chain as well).`,
+        example: [
+          `const obj = {100: 'a', 1: {c: 2}};`,
+          `console.log(Object.values(obj)); //=> [{c: 2}, 'a'] ** 1, 100 ...`,
+          `console.log(Object.values('foo')); //=> ['f', 'o', 'o']`,
+        ],
+        mutator: false,
       },
     ].map(obj => Object.assign(obj, { _id: returnId() })),
   },
@@ -653,11 +749,255 @@ export const typeOfSelects = [
     title: `Map && Set`,
     dataForSelect: [
       {
-        title: `for ... of`,
-        description: ``,
+        title: `Map`,
+        description: `Map - спец. обєкт із набором пара ключ-значення. Ключем може бути що завгодно. Ключ завжди унікальний.`,
         example: [
-          `use for:`,
-          `string, Array, Objject, Argument, DOM colection, Array Iterator {}`,
+          `Літерала не існує, тому створюється const map = new Map();`,
+          `в нього входить Iterator ([['key', 'value']])`,
+          `const map = new Map([['a', 1], ['b', 2]])`,
+          `console.log(map); //=> Map(2) {"a" => 1, "b" => 2}`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.set()`,
+        description: `The set() method adds or updates an element with a specified key and value to a Map object.`,
+        example: [
+          `const map = new Map();`,
+          `map.set('a', 1)`,
+          `console.log(map.size); //=> 1`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.get()`,
+        description: `The set() method adds or updates an element with a specified key and value to a Map object.`,
+        example: [
+          `const map = new Map([['a', 1]]);`,
+          `console.log(map.get('a')); //=> 1`,
+          `console.log(map.get(1); //=> undefined`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.has()`,
+        description: `The has() method returns a boolean indicating whether an element with the specified key exists or not.`,
+        example: [
+          `const map = new Map([['a', 1]]);`,
+          `console.log(map.has('a')); //=> true`,
+          `console.log(map.get(1)); //=> false`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.keys()`,
+        description: `The keys() method returns a new Iterator object that contains the keys for each element in the Map object in insertion order.`,
+        example: [
+          `const map = new Map([['a', 1], ['b', 2]]);`,
+          `console.log(map.keys()); //=> MapIterator ['a', 'b']`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.values()`,
+        description: `The keys() method returns a new Iterator object that contains the keys for each element in the Map object in insertion order.`,
+        example: [
+          `const map = new Map([['a', 1], ['b', 2]]);`,
+          `console.log(map.keys()); //=> MapIterator ['a', 'b']`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.entries()`,
+        description: `The entries() method returns a new Iterator object that contains the [key, value] pairs for each element in the Map object in insertion order.`,
+        example: [
+          `const map = new Map([['a', 1], ['b', 2]]);`,
+          `console.log(map.entries()); //=> MapIterator {"a" => 1, "b" => 2} == [['a', 1], ['b', 2]]`,
+          `const map = new Map([['a', 1], ['b', 2]]);`,
+          `for (const val of map.entries()) {console.log(val);} //=> ['a', 1] ** ['b', 2`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.forEach()`,
+        description: `The forEach() method executes a provided function once per each key/value pair in the Map object, in insertion order.`,
+        example: [
+          `const map = new Map([['a', 1], ['b', 2]]);`,
+          `console.log(map.forEach((val, key, map) => console.log(val, key, map))); //=> 1 "a" Map(2) {"a" => 1, "b" => 2} ** 2 "a" Map(2) {"a" => 1, "b" => 2}`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.clear()`,
+        description: `The clear() method removes all elements from a Map object.`,
+        example: [
+          `const map = new Map([['a', 1], ['b', 2]]);`,
+          `map.clear();`,
+          `console.log(map.size); //=> 0`,
+        ],
+      },
+
+      {
+        title: `Map.prototype.delete()`,
+        description: `The delete() method removes the specified element from a Map object.`,
+        example: [
+          `const map = new Map([['a', 1]]);`,
+          `map.delete('a');`,
+          `console.log(map.has('a')); //=> false`,
+        ],
+      },
+
+      {
+        title: `Set`,
+        description: `Набір унікальних значень будь-якого типу без визначеного порядку.`,
+        example: [
+          `const set = new Set([1, 2, 1, 3, 2]);`,
+          `console.log(set); //=> Set(3) {1, 2, 3}`,
+          `ключів не має взагалі`,
+        ],
+      },
+
+      {
+        title: `Set.prototype.add()`,
+        description: `The add() method appends a new element with a specified value to the end of a Set object.`,
+        example: [
+          `const set = new Set();`,
+          `set.add(100).add(1)`,
+          `console.log(set); //=> Set(2) {100, 1}`,
+        ],
+      },
+
+      {
+        title: `Set.prototype.has()`,
+        description: `The has() method returns a boolean indicating whether an element with the specified value exists in a Set object or not.`,
+        example: [
+          `const set = new Set([1, 2, 3, 4, 5]);`,
+          `console.log(set.has(1)); //=> true`,
+          `console.log(set.has(6)); //=> false`,
+        ],
+      },
+
+      {
+        title: `Set.prototype.entries()`,
+        description: `The entries() method returns a new Iterator object that contains an array of [value, value] for each element in the Set object, in insertion order. For Set objects there is no key like in Map objects. However, to keep the API similar to the Map object, each entry has the same value for its key and value here, so that an array [value, value] is returned.`,
+        example: [
+          `const set = new Set([5, 'n']);`,
+          `console.log(set.entries()); //=> SetIterator {5, "n"}`,
+          `for(const val of set.entries()) {console.log(val)} //=> [5, 5] ** ['n', 'n']`,
+        ],
+      },
+
+      {
+        title: `Set.prototype.values()`,
+        description: `The entries() method returns a new Iterator object that contains an array of [value, value] for each element in the Set object, in insertion order. For Set objects there is no key like in Map objects. However, to keep the API similar to the Map object, each entry has the same value for its key and value here, so that an array [value, value] is returned.`,
+        example: [
+          `const set = new Set([1, 3, 5]);`,
+          `console.log(set.values()); //=> SetIterator {1, 3, 5}`,
+          `console.log(set.values().next().value); //=> 1`,
+          `console.log(set.values().next().value); //=> 3`,
+          `console.log(set.values().next().value); //=> 5`,
+          `returns Iterator`,
+        ],
+      },
+
+      {
+        title: `Set.prototype.forEach()`,
+        description: `The forEach() method executes a provided function once for each value in the Set object, in insertion order.`,
+        example: [
+          `const set = new Set([1, 3, 5]);`,
+          `console.log(set.forEach((val_1, val_2, set) => console.log(val_1, val_2)); //=> 1, 1 ** 3, 3 ** 5, 5`,
+        ],
+      },
+
+      {
+        title: `Set.prototype.clear()`,
+        description: `The clear() method removes all elements from a Set object.`,
+        example: [
+          `const set = new Set([1, 3, 5]);`,
+          `set.clear()`,
+          `console.log(set.size); //=> 0`,
+        ],
+      },
+
+      {
+        title: `Set.prototype.delete()`,
+        description: `The delete() method removes the specified element from a Set object.`,
+        example: [
+          `const set = new Set([{a: 10, b: 38}, {a: 5}]);`,
+          `set.forEach(el => {if(el.a > 5) set.delete(el)})`,
+          `console.log(set); //=> {{5}}`,
+        ],
+      },
+
+      {
+        title: `WeakMap`,
+        description: `WeakMap - коллекція пар ключ - значення, ключами можуть бути тільки об'єкти`,
+        example: [
+          `завжди WeakMap.length == 0`,
+          `const weakMap = new WeakMap()`,
+          `const weakMap = new WeakMap([[{}, 1]])`,
+          `weakMap.set({d: 4}, 1)`,
+          `console.log(weakMap); //=> WeakMap {{…} => 1, {...} => 1}`,
+        ],
+      },
+
+      {
+        title: `WeakMap.prototype.set()`,
+        description: `The set() method adds a new element with a specified key and value to a WeakMap object.`,
+        example: [
+          `const weakMap = new WeakMap()`,
+          `const obj = {};`,
+          `weakMap.set(obj, 10)`,
+          `console.log(weakMap.get(obj)); //=> 10`,
+        ],
+      },
+
+      {
+        title: `WeakMap.prototype.get()`,
+        description: `The get() method returns a specified element from a WeakMap object.`,
+        example: [
+          `const weakMap = new WeakMap()`,
+          `const obj = {};`,
+          `weakMap.set(obj, 10)`,
+          `console.log(weakMap.get(obj)); //=> 10`,
+          `console.log(weakMap.get(obj__2)); //=> undefined`,
+        ],
+      },
+
+      {
+        title: `WeakMap.prototype.has()`,
+        description: `The has() method returns a boolean indicating whether an element with the specified key exists in the WeakMap object or not.`,
+        example: [
+          `const weakMap = new WeakMap()`,
+          `const obj = {};`,
+          `weakMap.set(obj, 10)`,
+          `console.log(weakMap.has(obj)); //=> true`,
+          `console.log(weakMap.get(obj__2)); //=> false`,
+        ],
+      },
+
+      {
+        title: `WeakMap.prototype.delete()`,
+        description: `The has() method returns a boolean indicating whether an element with the specified key exists in the WeakMap object or not.`,
+        example: [
+          `const weakMap = new WeakMap()`,
+          `const obj = {};`,
+          `weakMap.set(obj, 10)`,
+          `weakMap.delete(obj)`,
+          `console.log(weakMap.has(obj)); //=> false`,
+        ],
+      },
+
+      {
+        title: `WeakSet`,
+        description: `коллекція, елементами якої можуть бути тільки унікальні об'єкти, ссилки на які являються слабими. Якщо не буде ні одної зовн. ссилки на об'єкт у WeakSet, то збірник мусору видалить цей об'єкт.`,
+        example: [
+          `const weakSet = new WeakSet([{a:1}, {b:2}]);`,
+          `const obj = {c: 3};`,
+          `weakSet.add(obj)`,
+          `console.log(weakSet.has(obj)); //=> true`,
+          `weakSet.delete(obj);`,
+          `console.log(weakMap.has(obj)); //=> false`,
         ],
       },
     ].map(obj => Object.assign(obj, { _id: returnId() })),
@@ -667,6 +1007,74 @@ export const typeOfSelects = [
     _id: `loops`,
     title: `Loops`,
     dataForSelect: [
+      {
+        title: `for`,
+        description: ``,
+        example: [
+          `const arr = [3, 6, 2, 1];`,
+
+          `const foo = num => {`,
+          `for (let i=0; i<arr.length; i++) {`,
+          `if(arr[i] > num) {`,
+          `return;`,
+          `}`,
+          `console.log(arr[i]);`,
+          `}`,
+          `}`,
+
+          `foo(5); //=> 3`,
+
+          `const arr = [3, 6, 2, 1];`,
+
+          `const foo = num => {`,
+          `arr.forEach(el => {`,
+          `if(el > num) {`,
+          `return;`,
+          `};`,
+          `console.log(el);`,
+          `});`,
+          `}`,
+
+          `foo(5); //=> 3 ** 2 ** 1`,
+        ],
+      },
+
+      {
+        title: `for ... in`,
+        description: ``,
+        example: [
+          `class Color {`,
+          `constructor(c) {`,
+          `this.col = c;`,
+          `}`,
+          `}`,
+
+          `const obj = {a: 1, b: 2,};`,
+          `Color.prototype = obj;`,
+          `const color = new Color('green');`,
+          `console.log(color instanceof Color); //=> true`,
+          `console.log(Object.getPrototypeOf(color)); => obj`,
+
+          `for (const i in color) {`,
+          `console.log(i);`,
+          `};`,
+          `// => col, a, b`,
+          `for (const i in color) {`,
+          `if(i in color) {`,
+          `console.log(i);`,
+          `}`,
+          `};`,
+          `// => col, a, b`,
+
+          `for(const i in color) {`,
+          `if(color.hasOwnProperty(i)) {`,
+          `console.log(i);`,
+          `}`,
+          `};`,
+          `// => col`,
+        ],
+      },
+
       {
         title: `for ... of`,
         description: ``,

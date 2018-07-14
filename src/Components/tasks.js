@@ -45,3 +45,18 @@ checkAvailability(fruits, 'mango');   // true
 const fruits = ['apple', 'Banana', 'Pear', 'cherry'];
 console.log(fruits.filter(fr => fr.toLowerCase().indexOf('r') > -1)); //["Pear","cherry"] 
 ///////////////////////////////////////////
+const arr_1 = [1, 2, 3];
+const arr_2 = [4, 5];
+//arr_1.push.apply(arr_1, arr_2);
+//console.log(arr_1); //=> [1, 2, 3, 4, 5];
+const foo = (a_1, a_2) => {
+	for(const el of a_2) {
+		if(!a_1.includes(el)){
+			a_1.push(el);	
+        }
+	}
+	console.log(a_1);
+};
+
+foo(arr_1, arr_2); //=> [1, 2, 3, 4, 5];
+/////////////////////////////////////////////////////////////////////////
