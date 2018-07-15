@@ -60,3 +60,20 @@ const foo = (a_1, a_2) => {
 
 foo(arr_1, arr_2); //=> [1, 2, 3, 4, 5];
 /////////////////////////////////////////////////////////////////////////
+const arr = [{title: `first`, numb: [1, 2, 3]}, {title: `second`, numb: [4, 5]}, {title: `thirdt`, numb: [6, 7, 8]}];
+const res = arr.reduce((accum, curr) => accum.concat(curr.numb), []);
+console.log(res); //=> [1, 2, 3, 4, 5, 6, 7, 8]
+/////////////////////////////////////////////
+const arr = [{title: `first`, numb: [1, 2, 3]}, {title: `second`, numb: [4, 5]}, {title: `thirdt`, numb: [6, 7, 8]}];
+const res = arr.reduce((accum, curr) => accum + curr.numb.reduce((a, b) => a + b), 0);
+console.log(res); //=> 36
+/////////////////////////////////////////////////
+const arr = [[1, 2, 3], [4, 5], [6, 7, 8]];
+const res = arr.reduce((prev, curr) => [...prev, ...curr]);
+console.log(res); //=> [1, 2, 3, 4, 5, 6, 7, 8]
+////////////////////////////////////////////////////////////////////////////////////
+const arr = [[1, 2, 3], [4, 5], [6, 7, 8]];
+const res = arr.reduce((prev, curr) => prev.concat(curr));
+console.log(res); //=> [1, 2, 3, 4, 5, 6, 7, 8]
+/////////////////////////////////////////////
+const arr =[]

@@ -615,9 +615,35 @@ export const typeOfSelects = [
 
       {
         title: `Object.create()`,
-        description: ``,
-        example: [],
-        mutator: true,
+        description: `The Object.create() method creates a new object, using an existing object to provide the newly created object's __proto__ . (see browser console for visual evidence.)`,
+        example: [
+          `const obj = {`,
+          `a: 1,`,
+          `};`,
+
+          `const obj_2 = Object.create(obj, {b: {configurable: true, enumerable: true, value: 300}});`,
+          `console.log(obj_2); //=> {b: 2}`,
+          `спочатку шукаєтьсяв obj_2 - нема, шукається у прототипі - є`,
+          `console.log(obj_2.a); // 1`,
+          `obj_2.newProp = 50;`,
+          `obj.a = 100;`,
+          `console.log(obj_2); //=> {b: 2, newProp: 50}`,
+          `console.log(obj_2.a); // 100`,
+          `console.log('a' in obj_2); //=> true`,
+          `console.log(obj_2.hasOwnProperty('a')); //=> false`,
+
+          `////`,
+          `const obj = new Object();`,
+
+          `console.log('toString' in obj); //=> true`,
+          `console.log(obj.hasOwnProperty('toString')); //=> false`,
+          `const objNotClear = Object.create(Object.prototype);`,
+          `console.log('toString' in objClear); //=> true`,
+
+          `const objClear = Object.create(null);`,
+          `console.log('toString' in objClear); //=> false`,
+        ],
+        mutator: false,
       },
 
       {
@@ -711,7 +737,7 @@ export const typeOfSelects = [
         description: `The hasOwnProperty() method returns a boolean indicating whether the object has the specified property as its own property (as opposed to inheriting it).`,
         example: [
           `const obj = {100: 'a', 1: {c: 2}};`,
-          `console.log(obj.hasOwnProperty('a')); //=> true`,
+          `console.log(obj.hasOwnProperty(100)); //=> true`,
           `console.log(obj.hasOwnProperty('c')); //=> false`,
         ],
         mutator: false,
