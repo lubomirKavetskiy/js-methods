@@ -8,7 +8,7 @@ const returnId = createId();
 export const typeOfSelects = [
   {
     _id: `arrayMethods`,
-    title: `Array metods`,
+    title: `Array methods`,
     dataForSelect: [
       {
         title: `Array.from()`,
@@ -593,7 +593,7 @@ export const typeOfSelects = [
 
   {
     _id: `objectMethods`,
-    title: `Object metods`,
+    title: `Object methods`,
     dataForSelect: [
       {
         title: `Object.assign()`,
